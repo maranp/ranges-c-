@@ -36,4 +36,4 @@ Following are learnings through the process:
         end();
      }
 ```
-     By this, it can be seen that all the stl containers are ranges by themselves.
+By this, it can be seen that all the stl containers are ranges by themselves.
