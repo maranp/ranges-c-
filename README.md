@@ -20,3 +20,6 @@ The implementation would be inspired from (may be line by line rewrite of) https
 
 The coding would start from following 
 http://www.fluentcpp.com/2017/01/12/ranges-stl-to-the-next-level/
+
+which has a quote that inspires this project
+"A lot of manual operations performed on containers with for loops can be replaced by calls to algorithms of the STL."
