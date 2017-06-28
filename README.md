@@ -29,3 +29,9 @@ Following are learnings through the process:
 * std::transform(input.begin(), input.end(), std::back_inserter(output), f); // transforms all elements applying f
 * std::copy_if(input.begin(), input.end(), std::back_inserter(output), p); // filters the elements based on predicate p
 * No easy way to combine tranform and copy_if. There is no transform_if. Ranges helps to solve this problem.
+* Ranges are something that have begin and end which return iterators to traverse through the range.
+     Range {
+        begin();
+        end();
+     }
+     By this, it can be seen that all the stl containers are ranges by themselves.
