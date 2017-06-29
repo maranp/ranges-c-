@@ -18,10 +18,9 @@ Inspired from http://www.fluentcpp.com/2017/06/23/7-ways-better-cpp-summer/
 
 The implementation would be inspired from (may be line by line rewrite of) https://github.com/joboccara/ranges   
 The coding would start from following 
-http://www.fluentcpp.com/2017/01/12/ranges-stl-to-the-next-level/
-
+http://www.fluentcpp.com/2017/01/12/ranges-stl-to-the-next-level/   
 which has a quote that inspires this project
-"A lot of manual operations performed on containers with for loops can be replaced by calls to algorithms of the STL."
+> A lot of manual operations performed on containers with for loops can be replaced by calls to algorithms of the STL.
 
 Following are learnings through the process:
 * std::copy(v1.begin(), v1.end(), std::back_inserter(v2));  std::back_inserter used here is an output iterator that does a push_back into the container it is passed, every time it is assigned to. This relieves the programmer from the sizing of the output.
