@@ -2,8 +2,8 @@
 Implementation of ranges and its iterators and adaptors
 
 Inspired from http://www.fluentcpp.com/2017/06/23/7-ways-better-cpp-summer/
-<quote>
-During my summer project of last year, I implemented some range adaptors. And I it made me learn a HELL of a lot. For this reason, I’m going to detail this project to you, so you can take inspiration to build your own:
+
+    During my summer project of last year, I implemented some range adaptors. And I it made me learn a HELL of a lot. For this reason, I’m going to detail this project to you, so you can take inspiration to build your own:
 
     If you’re not familiar with Ranges in C++, read Ranges: the STL to the Next Level,
     Implement a transform_iterator,
@@ -14,7 +14,7 @@ During my summer project of last year, I implemented some range adaptors. And I 
     Generalise the zip adaptor by letting it take any number of ranges,
     Implement a Cartesian product range adaptor,
     Implement your own new range adaptor!
-</quote>
+
 
 The implementation would be inspired from (may be line by line rewrite of) https://github.com/joboccara/ranges
 
