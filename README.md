@@ -16,8 +16,7 @@ Inspired from http://www.fluentcpp.com/2017/06/23/7-ways-better-cpp-summer/
     Implement your own new range adaptor!
 
 
-The implementation would be inspired from (may be line by line rewrite of) https://github.com/joboccara/ranges
-
+The implementation would be inspired from (may be line by line rewrite of) https://github.com/joboccara/ranges   
 The coding would start from following 
 http://www.fluentcpp.com/2017/01/12/ranges-stl-to-the-next-level/
 
