@@ -22,7 +22,7 @@ http://www.fluentcpp.com/2017/01/12/ranges-stl-to-the-next-level/
 which has a quote that inspires this project
 > A lot of manual operations performed on containers with for loops can be replaced by calls to algorithms of the STL.
 
-Following are learnings through the process:
+**Following are learnings through the process:**
 * std::copy(v1.begin(), v1.end(), std::back_inserter(v2));  std::back_inserter used here is an output iterator that does a push_back into the container it is passed, every time it is assigned to. This relieves the programmer from the sizing of the output.
 * std::transform(input.begin(), input.end(), std::back_inserter(output), f); // transforms all elements applying f
 * std::copy_if(input.begin(), input.end(), std::back_inserter(output), p); // filters the elements based on predicate p
@@ -33,5 +33,5 @@ Following are learnings through the process:
         begin();
         end();
      }
-```
+```   
 By this, it can be seen that all the stl containers are ranges by themselves.
