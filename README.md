@@ -38,3 +38,10 @@ which has a quote that inspires this project
 * Smart iterators:
   * tranform_iterator - made of another iterator (it) and a function f. When deferenced, applies f to *it and return the result.
   * filter_iterator - made of another iterator (it) and a predicate p. When ++ is applied, 'it' is advanced until the element *it for which p holds
+  * Range adaptors - enables association of ranges with smart iterators.
+    * view adaptor - initial range remain unchanged but the produced range does not contain elements as its a view with customized iteration behaviour. Here is how range adaptor can be used.
+    ```c++
+    std::vector numbers = { 1, 2, 3, 4, 5 };
+    ranges::accumulate(numbers | view::filter(isEven) | view::transform(multiplyBy2), 0);
+    ```
+    returns 2*2 + 4*2 = 12
