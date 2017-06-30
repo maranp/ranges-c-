@@ -44,4 +44,4 @@ which has a quote that inspires this project
     std::vector numbers = { 1, 2, 3, 4, 5 };
     ranges::accumulate(numbers | view::filter(isEven) | view::transform(multiplyBy2), 0);
     ```
-    returns 2*2 + 4*2 = 12
+    returns 2 * 2 + 4 * 2 = 12
