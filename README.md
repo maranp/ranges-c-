@@ -35,4 +35,6 @@ which has a quote that inspires this project
      }
 ```   
    By this, it can be seen that all the stl containers are ranges by themselves.
-* __Next point here...__
+* Smart iterators:
+  * tranform_iterator - made of another iterator (it) and a function f. When deferenced, applies f to *it and return the result.
+  * filter_iterator - made of another iterator (it) and a predicate p. When ++ is applied, 'it' is advanced until the element *it for which p holds
