@@ -4,15 +4,18 @@
 #include <type_traits>
 #include <iterator>
 
+// http://en.cppreference.com/w/cpp/iterator/iterator_traits
+// const T* specialization member types
+// value_type   T
+// reference  const T&
+// difference_type  std::ptrdiff_t
 template <typename Iterator>
 struct is_const_iterator {
   static const bool value = std::is_const<
-                               typename std::remove_reference<
-				 typename std::iterator_traits<
-				   Iterator
-				   >::reference
-				 >::type
-                            >::value;
+      typename std::remove_reference<
+        typename std::iterator_traits<Iterator>::reference
+      >::type
+      >::value;
 };
 
 template <bool is_const_iterator_range, typename Iterator>
@@ -64,7 +67,8 @@ private:
 };
 
 template <typename Iterator>
-struct iterator_range : public iterator_range_impl<is_const_iterator<Iterator>::value, Iterator> {
+struct iterator_range :
+    public iterator_range_impl<is_const_iterator<Iterator>::value, Iterator> {
   using base = iterator_range_impl<is_const_iterator<Iterator>::value, Iterator>;
 
   iterator_range(Iterator begin, Iterator end) : base(begin, end) {}
