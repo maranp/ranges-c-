@@ -1,15 +1,19 @@
 #include "iterator_range.hpp"
 #include "algorithm.hpp"
+#include "transform.hpp"
 #include <iostream>
 #include <vector>
 
+int multiplyBy2(int i) { return i * 2; }
 bool testTransform() {
   std::vector<int> input = {1, 2, 3, 4, 5};
   std::vector<int> expected = {2, 4, 6, 8,10};
   std::vector<int> result;
-  auto doubledNumbers = input | ranges::view::transform(multiplyByTwo);
+  // type of doubledNumbers will be
+  // iterator_range<transform_iterator<input's const_iterator, multiplyByTwo>>
+  auto doubledNumbers = input | ranges::view::transform(multiplyBy2);
   ranges::push_back(result, doubledNumbers);
-  return true;
+  return result == expected;
 }
 
 // if function has to be taken as universal reference
