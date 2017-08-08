@@ -1,6 +1,7 @@
 #include "iterator_range.hpp"
 #include "algorithm.hpp"
 #include "transform.hpp"
+#include "variadic.hpp"
 #include <iostream>
 #include <vector>
 

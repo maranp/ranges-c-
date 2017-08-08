@@ -26,7 +26,7 @@ struct transform_iterator : public std::iterator<
     func_ = rhs.func_;
     return *this;
   }
-  auto operator++() {
+  transform_iterator<Iterator, FuncT> & operator++() {
     ++iterator_;
     return *this;
   }
