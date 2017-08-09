@@ -33,6 +33,44 @@ auto tupled_args(Res (*func)(Args...)) {
   };
 }
 
+template <typename Func, typename Tuple, std::size_t... index>
+auto transform_tuple_impl(Tuple const &input, Func func, std::index_sequence<index...>) {
+  return std::make_tuple(func(std::get<index>(input))...);
+}
+
+template <typename Func, typename... Args>
+auto transform_tuple(std::tuple<Args...> const &input, Func func) {
+  return transform_tuple_impl(func, input, std::make_index_sequence<sizeof...(Args)>{});
+}
+
+template <size_t n, typename Func, typename... Args>
+struct For_each_tuple_impl {
+  Func operator()(Func func, std::tuple<Args...> &input) {
+    func(std::get<n - 1>(input));
+    return For_each_tuple_impl<n - 1, Func, Args...>()(func, input);
+  }
+};
+
+template <typename Func, typename... Args>
+struct For_each_tuple_impl<1, Func, Args...> {
+  Func operator()(Func func, std::tuple<Args...> &input) {
+    func(std::get<0>(input));
+    return func;
+  }
+};
+
+template <typename Func, typename... Args>
+struct For_each_tuple_impl<0, Func, Args...> {
+  Func operator()(Func func, std::tuple<Args...> &input) {
+    return func;
+  }
+};
+
+template <typename Func, typename... Args>
+Func for_each_tuple(std::tuple<Args...> &input, Func func) {
+  return For_each_tuple_impl<sizeof...(Args), Func, Args...>()(func, input);
+}
+
 template <std::size_t n, typename T1, typename... Ts>
 struct get_type {
   // nth argument in the <T1, Ts...> list is
