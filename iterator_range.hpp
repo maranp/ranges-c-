@@ -66,6 +66,17 @@ private:
   Iterator end_;
 };
 
+// we have the iterator type as type parameter.
+// we want to send whether the iterator is const or not to the base class type parameter
+// std::is_const is a struct which takes its parameter type as the type whose const need to be identified
+// so, we can directly pass is_const<Iterator>::value to base class type param.
+// But we are not worried whether Iterator is const. We only care about the constness of underlying type that iterator
+// points to. We could think Iterator::value_type can be passed to is_const. But Iterator::value_type just provides
+// the type and not the constness. std::iterator_traits<Iterator>::reference gives const T & if underlying type has const
+// so we need to take std::iterator_traits<Iterator>::reference and then apply std::remove_reference<> on it
+// so what we really want is, std::is_const<std::remove_reference<std::iterator_traits<Iterator>::reference>::type>::value
+// which is quite complicated. so, a convenience wrapper struct called is_const_iterator<Iterator>::value returns the
+// same logic
 template <typename Iterator>
 struct iterator_range :
     public iterator_range_impl<is_const_iterator<Iterator>::value, Iterator> {

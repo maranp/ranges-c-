@@ -40,35 +40,36 @@ auto transform_tuple_impl(Tuple const &input, Func func, std::index_sequence<ind
 
 template <typename Func, typename... Args>
 auto transform_tuple(std::tuple<Args...> const &input, Func func) {
-  return transform_tuple_impl(func, input, std::make_index_sequence<sizeof...(Args)>{});
+  return transform_tuple_impl(input, func, std::make_index_sequence<sizeof...(Args)>{});
 }
 
-template <size_t n, typename Func, typename... Args>
+template <std::size_t n, typename Func, typename... Args>
 struct For_each_tuple_impl {
-  Func operator()(Func func, std::tuple<Args...> &input) {
-    func(std::get<n - 1>(input));
-    return For_each_tuple_impl<n - 1, Func, Args...>()(func, input);
+  Func operator()(std::tuple<Args...> & args, Func & func) {
+    func(std::get<n - 1>(args));
+    For_each_tuple_impl<sizeof...(Args), Func, Args...>(args, func);
+    return func;
   }
 };
 
 template <typename Func, typename... Args>
 struct For_each_tuple_impl<1, Func, Args...> {
-  Func operator()(Func func, std::tuple<Args...> &input) {
-    func(std::get<0>(input));
+  Func operator()(std::tuple<Args...> & args, Func & func) {
+    func(std::get<0>(args));
     return func;
   }
 };
 
 template <typename Func, typename... Args>
 struct For_each_tuple_impl<0, Func, Args...> {
-  Func operator()(Func func, std::tuple<Args...> &input) {
+  Func operator()(std::tuple<Args...> & args, Func & func) {
     return func;
   }
 };
 
 template <typename Func, typename... Args>
-Func for_each_tuple(std::tuple<Args...> &input, Func func) {
-  return For_each_tuple_impl<sizeof...(Args), Func, Args...>()(func, input);
+Func for_each_tuple(std::tuple<Args...> & args, Func func) {
+  return For_each_tuple_impl<sizeof...(Args), Func, Args...>(args, func);
 }
 
 template <std::size_t n, typename T1, typename... Ts>
@@ -91,6 +92,7 @@ struct get_type<0, T1, Ts...> {
 template <std::size_t n, typename... Ts>
 using get_type_t = typename get_type<n, Ts...>::type;
 
+
 template <std::size_t n, typename T1, typename... Ts>
 struct Get_value {
   auto & operator()(T1 &&, Ts &&... ts) {
@@ -101,7 +103,11 @@ struct Get_value {
 template <typename T1, typename... Ts>
 struct Get_value<0, T1, Ts...> {
   auto & operator()(T1 && t, Ts &&...) {
+    // return type is reference.
+    // what's the effective difference between the below 2?
+    // original statement is the first one
     return t;
+    // return std::forward<T1>(t);
   }
 };
 
