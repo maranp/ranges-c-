@@ -10,7 +10,6 @@
 
 #include <algorithm>
 
-namespace ranges {
 template <typename SrcRange, typename Iterator>
 Iterator copy(SrcRange const & src, Iterator dst) {
   return std::copy(src.begin(), src.end(), dst);
@@ -30,6 +29,7 @@ Func for_each(Range const & range, Func func) {
   return std::for_each(range.begin(), range.end(), func);
 }
 
+namespace ranges {
 template <typename DstRange, typename SrcRange>
 void push_back(DstRange & dst, SrcRange const & src) {
   copy(src, std::back_inserter(dst));

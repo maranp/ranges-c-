@@ -9,6 +9,9 @@
 #define TRANSFORM_HPP_
 
 namespace ranges {
+// a standard iterator with specific features
+// takes standard iterator and a function
+// when dereferenced, applies the function and then returns the value
 template <typename Iterator, typename FuncT>
 struct transform_iterator : public std::iterator<
   typename std::iterator_traits<Iterator>::iterator_category,
@@ -63,6 +66,10 @@ transform_adaptor<FuncT> transform(FuncT func) {
   return transform_adaptor<FuncT>(func);
 }
 
+// we want to "pipe" a container (range) to a "transformer"
+// to a get a view of range thats result of applying transformation on the container
+// the transformer which is called adaptor is one just stores the transforming function object
+// its not clean why an adaptor (a storage for function object) is needed at all
 template <typename Range, typename FuncT>
 iterator_range<
   transform_iterator<typename Range::const_iterator, FuncT>>
