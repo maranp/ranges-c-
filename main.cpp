@@ -4,6 +4,7 @@
 #include "variadic.hpp"
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 int multiplyBy2(int i) { return i * 2; }
 bool testTransform() {
@@ -15,6 +16,25 @@ bool testTransform() {
   auto doubledNumbers = input | ranges::view::transform(multiplyBy2);
   ranges::push_back(result, doubledNumbers);
   return result == expected;
+}
+
+std::string letterPlusNumber(char line, int column) {
+  std::ostringstream pos;
+  pos << line << column;
+  return pos.str();
+}
+
+bool testZip() {
+  std::vector<char> input1 = {'A', 'B', 'C', 'D', 'E'};
+  std::vector<int> input2 = {1, 2, 3, 4, 5};
+  std::vector<std::string> expected = {"A1", "B2", "C3", "D4", "E5"};
+
+  std::vector<std::string> result;
+
+  ranges::push_back(result,
+            ranges::view::zip(input1, input2)
+            | ranges::view::transform(tupled_args(letterPlusNumber)));
+
 }
 
 // if function has to be taken as universal reference
