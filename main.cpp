@@ -32,8 +32,8 @@ bool testZip() {
   std::vector<std::string> result;
 
   ranges::push_back(result,
-            ranges::view::zip(input1, input2)
-            | ranges::view::transform(tupled_args(letterPlusNumber)));
+                    ranges::view::zip(input1, input2)
+                    | ranges::view::transform(tupled_args(letterPlusNumber)));
 
 }
 
