@@ -47,7 +47,7 @@ template <std::size_t n, typename Func, typename... Args>
 struct For_each_tuple_impl {
   Func operator()(std::tuple<Args...> & args, Func & func) {
     func(std::get<n - 1>(args));
-    For_each_tuple_impl<sizeof...(Args), Func, Args...>(args, func);
+    For_each_tuple_impl<n - 1, Func, Args...>()(args, func);
     return func;
   }
 };
@@ -67,9 +67,11 @@ struct For_each_tuple_impl<0, Func, Args...> {
   }
 };
 
+// for_each_in_tuple - a tool to iterate of the elements of a tuple and call func on that element
 template <typename Func, typename... Args>
-Func for_each_tuple(std::tuple<Args...> & args, Func func) {
-  return For_each_tuple_impl<sizeof...(Args), Func, Args...>(args, func);
+Func for_each_in_tuple(std::tuple<Args...> & args, Func func) {
+  For_each_tuple_impl<sizeof...(Args), Func, Args...>()(args, func);
+  return func;
 }
 
 template <std::size_t n, typename T1, typename... Ts>
@@ -86,6 +88,7 @@ struct get_type<0, T1, Ts...> {
   using type = T1;
 };
 
+// get_type_t<n, Types..> - a tool to get the nth type from a list of types
 // to get the type of nth argument from a list of argument types
 // define an alias that queries the member type of a structure that
 // takes all argument types as its template parameter

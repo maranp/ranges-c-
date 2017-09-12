@@ -2,6 +2,7 @@
 #include "algorithm.hpp"
 #include "transform.hpp"
 #include "variadic.hpp"
+#include "zip.hpp"
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -35,6 +36,10 @@ bool testZip() {
                     ranges::view::zip(input1, input2)
                     | ranges::view::transform(tupled_args(letterPlusNumber)));
 
+  for (auto x : result) {
+    std::cout << x << std::endl;
+  }
+  return result == expected;
 }
 
 // if function has to be taken as universal reference
@@ -53,7 +58,9 @@ void launchTests() {
   std::cout << "testResult(testTransform): "
       << std::boolalpha
       << testResult(testTransform) << std::endl;
-
+  std::cout << "testResult(testTransform): "
+      << std::boolalpha
+      << testResult(testZip) << std::endl;
 }
 
 int main() {
