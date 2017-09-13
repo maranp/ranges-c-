@@ -3,6 +3,7 @@
 #include "transform.hpp"
 #include "variadic.hpp"
 #include "zip.hpp"
+#include "cartesian_product.hpp"
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -42,6 +43,27 @@ bool testZip() {
   return result == expected;
 }
 
+bool testCartesian() {
+  std::vector<char> input1 = {'A', 'B', 'C', 'D', 'E'};
+  std::vector<int> input2 = {1, 2, 3, 4, 5};
+  std::vector<std::string> expected = {"A1", "A2", "A3", "A4", "A5",
+                                       "B1", "B2", "B3", "B4", "B5",
+                                       "C1", "C2", "C3", "C4", "C5",
+                                       "D1", "D2", "D3", "D4", "D5",
+                                       "E1", "E2", "E3", "E4", "E5" };
+
+  std::vector<std::string> result;
+
+  ranges::push_back(result,
+                    ranges::view::cartesian(input1, input2)
+                    | ranges::view::transform(tupled_args(letterPlusNumber)));
+
+  for (auto x : result) {
+    std::cout << x << std::endl;
+  }
+  return result == expected;
+}
+
 // if function has to be taken as universal reference
 // but what is the need?
 //template <typename FuncT>
@@ -61,6 +83,9 @@ void launchTests() {
   std::cout << "testResult(testTransform): "
       << std::boolalpha
       << testResult(testZip) << std::endl;
+  std::cout << "testResult(testCartesian): "
+      << std::boolalpha
+      << testResult(testCartesian) << std::endl;
 }
 
 int main() {
