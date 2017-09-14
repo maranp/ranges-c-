@@ -55,7 +55,7 @@ bool testCartesian() {
   std::vector<std::string> result;
 
   ranges::push_back(result,
-                    ranges::view::cartesian(input1, input2)
+                    ranges::view::cartesian_product(input1, input2)
                     | ranges::view::transform(tupled_args(letterPlusNumber)));
 
   for (auto x : result) {

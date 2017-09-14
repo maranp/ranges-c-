@@ -8,6 +8,8 @@
 #ifndef NAMED_TYPE_HPP_
 #define NAMED_TYPE_HPP_
 
+#include <functional>
+
 // a phantom type is a type which is not used in the
 // implementation but just used to differentiate
 // instationation of 2 named types if the underlying
@@ -35,7 +37,7 @@ private:
 template <typename T, typename PhantomType>
 class NamedTypeRef {
 public:
-  NamedTypeRef(T & value_) : tref {std::ref(value)} {}
+  NamedTypeRef(T & value) : tref {std::ref(value)} {}
   T & get() { return tref.get(); }
   T const & get() const { return tref.get(); }
 private:
