@@ -4,6 +4,7 @@
 #include "variadic.hpp"
 #include "zip.hpp"
 #include "cartesian_product.hpp"
+#include "adjacent.hpp"
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -26,6 +27,12 @@ std::string letterPlusNumber(char line, int column) {
   return pos.str();
 }
 
+std::string letterToNext(char first, char second) {
+  std::ostringstream oss;
+  oss << first << "-" << second;
+  return oss.str();
+}
+
 bool testZip() {
   std::vector<char> input1 = {'A', 'B', 'C', 'D', 'E'};
   std::vector<int> input2 = {1, 2, 3, 4, 5};
@@ -37,9 +44,6 @@ bool testZip() {
                     ranges::view::zip(input1, input2)
                     | ranges::view::transform(tupled_args(letterPlusNumber)));
 
-  for (auto x : result) {
-    std::cout << x << std::endl;
-  }
   return result == expected;
 }
 
@@ -64,6 +68,22 @@ bool testCartesian() {
   return result == expected;
 }
 
+bool testAdjacent() {
+  std::vector<char> input = {'A', 'B', 'C', 'D', 'E', 'F'};
+  std::vector<std::string> expected = {"A-B", "B-C", "C-D", "D-E", "E-F"};
+
+  std::vector<std::string> result;
+
+  ranges::push_back(result,
+                    input | ranges::view::adjacent
+                    | ranges::view::transform(paired_args(letterToNext)));
+
+  for (auto x : result) {
+    std::cout << x << std::endl;
+  }
+  return result == expected;
+}
+
 // if function has to be taken as universal reference
 // but what is the need?
 //template <typename FuncT>
@@ -80,12 +100,15 @@ void launchTests() {
   std::cout << "testResult(testTransform): "
       << std::boolalpha
       << testResult(testTransform) << std::endl;
-  std::cout << "testResult(testTransform): "
+  std::cout << "testResult(testZip): "
       << std::boolalpha
       << testResult(testZip) << std::endl;
   std::cout << "testResult(testCartesian): "
       << std::boolalpha
       << testResult(testCartesian) << std::endl;
+  std::cout << "testResult(testAdjacent): "
+      << std::boolalpha
+      << testResult(testAdjacent) << std::endl;
 }
 
 int main() {
