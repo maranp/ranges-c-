@@ -74,7 +74,7 @@ bool testAdjacent() {
 
   std::vector<std::string> result;
 
-  ranges::push_back(result,
+  push_back(result,
                     input | ranges::view::adjacent
                     | ranges::view::transform(paired_args(letterToNext)));
 

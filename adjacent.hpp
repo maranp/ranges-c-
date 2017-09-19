@@ -16,13 +16,13 @@
 namespace ranges {
 
 template <typename Iterator>
-using BeginIterator = NamedType<Iterator, struct begin>;
+using BeginIterator = NamedType<Iterator, struct begin_context>;
 
 template <typename Iterator>
-using EndIterator = NamedType<Iterator, struct end>;
+using EndIterator = NamedType<Iterator, struct end_context>;
 
 template <typename UnderlyingIterator>
-struct adjacent_iterator : public std::iterator <
+class adjacent_iterator : public std::iterator <
   // iterator category
   typename std::iterator_traits<UnderlyingIterator>::iterator_category,
   // type
@@ -30,17 +30,17 @@ struct adjacent_iterator : public std::iterator <
   // difference_type
   typename std::iterator_traits<UnderlyingIterator>::difference_type,
   // T *
-  std::pair<typename std::iterator_traits<UnderlyingIterator>::value_type, typename std::iterator_traits<UnderlyingIterator>::value_type> *,
+  const std::pair<typename std::iterator_traits<UnderlyingIterator>::value_type, typename std::iterator_traits<UnderlyingIterator>::value_type> *,
   // T &
-  std::pair<typename std::iterator_traits<UnderlyingIterator>::value_type, typename std::iterator_traits<UnderlyingIterator>::value_type> &
+  const std::pair<typename std::iterator_traits<UnderlyingIterator>::value_type, typename std::iterator_traits<UnderlyingIterator>::value_type> &
 > {
-
-  adjacent_iterator(BeginIterator<UnderlyingIterator> begin, EndIterator<UnderlyingIterator> end)
+public:
+  explicit adjacent_iterator(BeginIterator<UnderlyingIterator> begin, EndIterator<UnderlyingIterator> end)
       : iterator_ {begin.get()},
         next_ { begin.get() != end.get() ? std::next(begin.get()) : begin.get() },
         isEnd_ { false } {}
 
-  adjacent_iterator(EndIterator<UnderlyingIterator> end)
+  explicit adjacent_iterator(EndIterator<UnderlyingIterator> end)
       : iterator_ {end.get()}, next_ { end.get() }, isEnd_ { true } {}
 
   auto operator++() {
@@ -82,18 +82,17 @@ private:
 namespace view {
 
 template <typename Range>
-auto consecutive(Range const & range) -> iterator_range<adjacent_iterator<decltype(range.begin())>> {
+auto consecutive(Range & range) -> iterator_range<adjacent_iterator<decltype(range.begin())>> {
   using UnderlyingIterator = decltype(range.begin());
   return iterator_range<adjacent_iterator<UnderlyingIterator>>(
-          adjacent_iterator<UnderlyingIterator>(BeginIterator<UnderlyingIterator>(range.begin()),
-          EndIterator<UnderlyingIterator>(range.end())),
+          adjacent_iterator<UnderlyingIterator>(BeginIterator<UnderlyingIterator>(range.begin()), EndIterator<UnderlyingIterator>(range.end())),
           adjacent_iterator<UnderlyingIterator>(EndIterator<UnderlyingIterator>(range.end())));
 }
 struct adjacent_adaptor {};
 adjacent_adaptor adjacent;
 
 template <typename Range>
-auto operator |(Range const & range, adjacent_adaptor) -> iterator_range<adjacent_iterator<decltype(range.begin())>> {
+auto operator |(Range & range, adjacent_adaptor) -> iterator_range<adjacent_iterator<decltype(range.begin())>> {
   return consecutive(range);
 }
 

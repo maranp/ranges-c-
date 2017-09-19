@@ -33,7 +33,7 @@ auto tupled_args(Res (*func)(Args...)) {
   };
 }
 
-template <typename Func, typename Tuple, std::size_t... index>
+template <typename Tuple, typename Func, std::size_t... index>
 auto transform_tuple_impl(Tuple const &input, Func func, std::index_sequence<index...>) {
   return std::make_tuple(func(std::get<index>(input))...);
 }

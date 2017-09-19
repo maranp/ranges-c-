@@ -8,42 +8,46 @@
 #ifndef TRANSFORM_HPP_
 #define TRANSFORM_HPP_
 
+#include "iterator_range.hpp"
+#include <iterator>
+#include <type_traits>
+
 namespace ranges {
 // a standard iterator with specific features
 // takes standard iterator and a function
 // when dereferenced, applies the function and then returns the value
-template <typename Iterator, typename FuncT>
+template <typename UnderlyingIterator, typename FuncT>
 struct transform_iterator : public std::iterator<
-  typename std::iterator_traits<Iterator>::iterator_category,
-  std::result_of_t<FuncT(typename std::iterator_traits<Iterator>::value_type)>,
-  typename std::iterator_traits<Iterator>::difference_type,
-  const std::result_of_t<FuncT(typename std::iterator_traits<Iterator>::value_type)>*,
-  const std::result_of_t<FuncT(typename std::iterator_traits<Iterator>::value_type)>&
+  typename std::iterator_traits<UnderlyingIterator>::iterator_category,
+  std::result_of_t<FuncT(typename std::iterator_traits<UnderlyingIterator>::value_type)>,
+  typename std::iterator_traits<UnderlyingIterator>::difference_type,
+  const std::result_of_t<FuncT(typename std::iterator_traits<UnderlyingIterator>::value_type)>*,
+  const std::result_of_t<FuncT(typename std::iterator_traits<UnderlyingIterator>::value_type)>&
   > {
-  transform_iterator(Iterator iterator, FuncT func) : iterator_ {iterator}, func_ {func} {}
+  transform_iterator(UnderlyingIterator iterator, FuncT func) : iterator_ {iterator}, func_ {func} {}
   auto operator*() {
     return func_(*iterator_);
   }
-  transform_iterator<Iterator, FuncT> & operator=(transform_iterator<Iterator, FuncT> const &rhs) {
+  transform_iterator & operator=(transform_iterator const &rhs) {
     iterator_ = rhs.iterator_;
     func_ = rhs.func_;
-    return *this;
+    //return *this;
   }
-  transform_iterator<Iterator, FuncT> & operator++() {
+  transform_iterator operator++() {
     ++iterator_;
     return *this;
   }
-  bool operator==(transform_iterator<Iterator, FuncT> const & rhs) {
+  bool operator==(transform_iterator const & rhs) {
     return iterator_ == rhs.iterator_;
   }
-  bool operator!=(transform_iterator<Iterator, FuncT> const & rhs) {
-    return !(rhs == *this);
+  bool operator!=(transform_iterator const & rhs) {
+    return !(*this == rhs);
   }
-  auto operator-(transform_iterator<Iterator, FuncT> const & rhs) {
+  auto operator-(transform_iterator const & rhs) {
     return iterator_ - rhs.iterator_;
   }
 private:
-  Iterator iterator_;
+  UnderlyingIterator iterator_;
   FuncT func_;
 };
 
